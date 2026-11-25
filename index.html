@@ -491,8 +491,7 @@ ${list.length?list.map(entryHTML).join(''):`<div class="empty-msg">${entries.len
 <div class="row" style="margin:18px 0"><button class="btn dark" data-act="export">Copiar tudo · Bullet Journal</button></div>`}
 function vFotos(){const p=entries.filter(e=>e.photo&&mem[e.photo]).slice().reverse();
  return `<header class="top"><span>Arquivo fotográfico</span><span>${p.length} fotos</span></header>${seg('f')}
-${p.length?`<div class="pgrid">${p.map(e=>`<div class="pol"><img src="${mem[e.photo]}" alt="" data-act="light" data-id="${e.id}"><label>${esc(e.text||dayLabel(e.day))}</label></div>`).join('')}</div>`:`<div class="empty-msg">Sem fotos ainda.<br>Use “+ foto” no botão + para colar a primeira.</div>`}
-<div class="credit" style="margin-top:20px">Só as suas fotos · ficam neste navegador, reduzidas para caber.</div>`}
+${p.length?`<div class="pgrid">${p.map(e=>`<div class="pol"><img src="${mem[e.photo]}" alt="" data-act="light" data-id="${e.id}"><label>${esc(e.text||dayLabel(e.day))}</label></div>`).join('')}</div>`:`<div class="empty-msg">Sem fotos ainda.<br>Use “+ foto” no botão + para colar a primeira.</div>`}`}
 function vInq(){const l=entries.filter(e=>e.cat==='Me pergunto'||e.cat==='Pesquisar depois');const g={};l.forEach(e=>(g[e.day]=g[e.day]||[]).push(e));
  const ks=Object.keys(g).map(Number).sort((a,b)=>a-b);
  return `<header class="top"><span>Índice de inquietações</span><span>${l.length}</span></header>${seg('i')}
