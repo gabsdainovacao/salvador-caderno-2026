@@ -101,6 +101,9 @@ h1,h2,h3{font-family:var(--disp);font-weight:500;margin:0;letter-spacing:-.02em}
 .dayrow small{display:block;font:500 10px var(--mono);letter-spacing:.1em;color:var(--mute);text-transform:uppercase;margin-top:4px}
 .dayrow .go{color:var(--c);font-size:20px}
 .dayrow.now{background:linear-gradient(90deg,#e0a52630,transparent)}
+.praiaout{min-height:120px;border:1.2px dashed #1c273355;padding:14px;border-radius:2px;background:#fff6}
+.pr-name{font:600 30px/1.05 var(--disp);letter-spacing:-.03em}
+.praiaout.spin .pr-name{opacity:.55}
 .tbl{width:100%;border-collapse:collapse;font-size:13px}
 .tbl td{padding:8px 4px;border-bottom:1px solid #1c273320;vertical-align:top}
 .tbl td:first-child{white-space:nowrap;font:500 11px var(--mono);letter-spacing:.06em;color:var(--dende)}
@@ -437,10 +440,23 @@ ${last?`<div class="cap" style="margin:4px 0 10px;color:var(--ink)">Últimas pá
 <section class="page grid" style="text-align:center;padding:30px 20px"><div class="waves" style="margin-top:0"></div><h2 style="font:italic 500 30px/1.1 var(--disp);margin:10px 0">O roteiro é um caminho previsto, não uma obrigação.</h2><div class="pen" style="font-size:27px;color:var(--ink)">Salvador não precisa caber no roteiro.<br>O roteiro deve abrir espaço para Salvador.</div></section>
 <div class="foot"><span>Salvador · caderno aberto</span><span>01 / 08</span></div>`}
 
+const PRAIAS=[
+['Porto da Barra','Perto do hotel','Água geralmente calma e rasa, boa para entrar com tranquilidade. Costuma lotar, e o pôr do sol é a hora mais bonita.','Barra · Ter'],
+['Farol da Barra','Perto do hotel','Mais para caminhar, ver o pôr do sol e o movimento do que para nadar: o mar é mais aberto e tem pedras.','Barra · fim de tarde'],
+['Praia da Paciência','Rio Vermelho','Pequena e de bairro, com clima local e perto da Casa de Iemanjá. O mar pode estar agitado, então olhe como está antes de entrar.','Rio Vermelho · Sáb'],
+['Boa Viagem','Cidade Baixa','Enseada tranquila, de água mais calma, perto da região do Bonfim. Boa para combinar com o dia da Cidade Baixa.','Bonfim · Qua'],
+['Stella Maris','Orla Atlântica (longe)','Praia larga, com ondas e barracas. É mais um dia de praia de verdade, e a viagem de Uber é longa.','Dia inteiro · Qui'],
+['Praia do Flamengo','Orla Atlântica (longe)','Larga, com barracas estruturadas e movimento. Funciona como dia inteiro de praia, com ida de Uber.','Dia inteiro · Qui'],
+['Itapuã','Orla Atlântica (longe)','Praia tradicional, associada ao bairro e à lagoa do Abaeté. Combina com um dia mais cultural e de comer bem.','Dia inteiro · Qui']
+];
+let praiaI=-1,praiaT=null;
+const praiaCard=i=>{const b=PRAIAS[i];return `<div class="pr-name">${esc(b[0])}</div><div class="cap" style="margin:2px 0 8px;color:#1f7f94">${esc(b[1])} · ${esc(b[3])}</div><div style="font:italic 400 17px/1.35 var(--disp)">${esc(b[2])}</div><div class="row" style="margin-top:12px"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Praia '+b[0].replace(/^Praia (do |da )?/,'')+' Salvador Bahia')}" target="_blank" rel="noopener">Ver no Maps ↗</a></div>`};
+function sortearPraia(){const out=document.getElementById('praiaOut');if(!out)return;const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;let n=rm?0:9,i=praiaI;clearInterval(praiaT);const fin=()=>{let k;do{k=Math.floor(Math.random()*PRAIAS.length)}while(k===praiaI&&PRAIAS.length>1);praiaI=k;out.innerHTML=praiaCard(k);out.classList.remove('spin')};if(!n){fin();return}out.classList.add('spin');praiaT=setInterval(()=>{i=(i+1+Math.floor(Math.random()*3))%PRAIAS.length;out.innerHTML=`<div class="pr-name">${esc(PRAIAS[i][0])}</div>`;if(--n<=0){clearInterval(praiaT);fin()}},90)}
 function vRoteiro(){const ti=todayIdx();
  const rows=DAYS.map((d,i)=>`<a class="dayrow${ti===i?' now':''}" style="--c:${DC[i]}" href="#dia-${i+1}"><div class="dayno">${String(i+1).padStart(2,'0')}</div><div><strong>${esc(d.t)}</strong><small>${d.d} · ${d.dt}</small></div><span class="go">›</span></a>`).join('');
  return `<header class="top"><span>O roteiro</span><span>8 dias · 7 noites</span></header>
 <section class="page grid"><span class="washi"></span><h2 style="font:600 46px/.95 var(--disp);letter-spacing:-.045em;margin:8px 0 4px">Oito fitas,<br><span style="font-style:italic;font-weight:400;color:var(--dende)">oito dias.</span></h2><div style="margin-top:14px">${rows}</div></section>
+<section class="scrap"><span class="washi r"></span><div class="cap" style="color:#1f7f94">Praias de Salvador</div><h2 style="font-size:28px;margin:4px 0 6px">Sem decidir? Sorteie.</h2><div style="font-size:13px;margin-bottom:12px">Opções para os dias de praia (ter, qui, sáb) e para qualquer dia indeciso. Confira a previsão e as condições do mar antes de ir.</div><div id="praiaOut" class="praiaout"><div style="font:italic 400 17px/1.35 var(--disp);opacity:.65">Toque no botão para sortear uma praia.</div></div><div class="row" style="margin-top:12px"><button class="btn red" data-act="praia">🎲 Sortear praia</button></div><details style="margin-top:14px"><summary class="cap" style="cursor:pointer">Ver todas as opções</summary><table class="tbl" style="margin-top:8px">${PRAIAS.map(b=>`<tr><td>${esc(b[0])}</td><td>${esc(b[1])}. ${esc(b[2])}</td></tr>`).join('')}</table></details></section>
 `}
 
 function vDia(n){const i=n-1,d=DAYS[i];if(!d)return vRoteiro();const c=DC[i];const ti=todayIdx();
@@ -548,6 +564,7 @@ async function saveCap(){const text=$('#captext').value.trim();if(!text&&!cap.ph
 /* ---------- eventos ---------- */
 let delT={};
 document.addEventListener('click',async ev=>{const el=ev.target.closest('[data-act]');if(!el)return;const a=el.dataset.act;
+ if(a==='praia'){sortearPraia();return}
  if(a==='cap')openCap({cat:el.dataset.cat,day:el.dataset.day!=null?+el.dataset.day:undefined,pre:el.dataset.pre});
  else if(a==='closecap')closeCap();
  else if(a==='capcat'){cap.cat=el.dataset.c;document.querySelectorAll('#capchips .chip').forEach(b=>b.classList.toggle('on',b===el))}
