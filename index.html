@@ -193,11 +193,22 @@ details .in{padding:0 0 18px;animation:rise .4s both}
 .fab:active{transform:scale(.92) rotate(90deg)}
 .ov{position:fixed;inset:0;background:#1c2733b8;z-index:40;display:none;align-items:flex-end;justify-content:center;overflow:auto}
 .ov.show{display:flex}
-.sheet{width:100%;max-width:480px;background:var(--paper);border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom));max-height:94vh;overflow:auto;animation:up .35s cubic-bezier(.2,.8,.25,1)}
-.sheet h2{font-size:30px}
-.sheet textarea,.box textarea{width:100%;min-height:120px;background:#fbf6e8;border:1px solid #1c273344;border-radius:4px;padding:12px;font:400 16px/1.45 var(--body);color:var(--ink);outline:none;resize:vertical}
-.sheet textarea:focus{border-color:var(--dende)}
-.sheet select{width:100%;padding:10px;background:#fbf6e8;border:1px solid #1c273344;border-radius:4px;font:500 12px var(--mono);color:var(--ink)}
+.sheet{width:100%;max-width:480px;position:relative;background:var(--paper);background-image:linear-gradient(#7d6f5614 1px,transparent 1px),linear-gradient(90deg,#7d6f5614 1px,transparent 1px);background-size:20px 20px;border-radius:14px 14px 0 0;padding:26px 18px calc(20px + env(safe-area-inset-bottom));max-height:94vh;overflow:auto;box-shadow:0 -8px 30px #1c273333;animation:up .35s cubic-bezier(.2,.8,.25,1)}
+.sheet:before{content:'';position:absolute;top:-8px;left:50%;width:92px;height:22px;margin-left:-46px;transform:rotate(-3deg);background:repeating-linear-gradient(115deg,#ffffff55 0 5px,#ffffff00 5px 10px),#e8b44f;opacity:.9;clip-path:polygon(0 8%,4% 0,8% 10%,12% 0,100% 0,96% 50%,100% 100%,12% 100%,8% 90%,4% 100%,0 92%,3% 50%)}
+.sheet h2{font-size:32px;letter-spacing:-.03em}
+.sheet .lbl{font:500 9px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:16px 0 6px}
+.npad{position:relative;background:#fffaf0;box-shadow:0 1px 0 #1c273322,0 6px 14px -8px #1c273355;border-radius:2px;transform:rotate(-.4deg)}
+.npad:before{content:'';position:absolute;left:34px;top:0;bottom:0;width:1.5px;background:#c8322b55;z-index:1;pointer-events:none}
+.sheet textarea,.box textarea{display:block;width:100%;min-height:150px;border:0;border-radius:2px;padding:6px 14px 8px 46px;color:#1c2733;outline:none;resize:none;background:repeating-linear-gradient(transparent 0 33px,#2c4f9e33 33px 34px) 0 6px/100% 34px;background-attachment:local;font:400 29px/34px var(--pen);letter-spacing:.01em}
+.sheet textarea::placeholder{color:#1c273373}
+.sheet textarea:focus{box-shadow:inset 0 0 0 1.5px #c8322b66}
+.box textarea{background:#fffaf0;border:1px solid #1c273333;padding:12px;font:13px/1.4 var(--mono);resize:vertical;min-height:120px}
+.days{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:3px 18px 8px}
+.days::-webkit-scrollbar{display:none}
+.dpill{flex:none;border:0;background:#fffaf0;color:var(--ink);padding:7px 12px 7px 11px;font:500 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;box-shadow:inset 3px 0 0 var(--c,#1c2733),0 1px 3px #1c273333;border-radius:2px;transition:.15s}
+.dpill small{display:block;font:400 8px var(--mono);opacity:.65;margin-top:1px}
+.dpill.on{background:var(--c,#1c2733);color:#fff;box-shadow:0 3px 8px -3px #1c273399;transform:translateY(-1px) rotate(-1.2deg)}
+.dpill.on.lt{color:#1c2733}
 .prev{margin-top:10px;position:relative;display:none}
 .prev img{width:100%;max-height:200px;object-fit:cover;border:6px solid #fbf6e8;box-shadow:var(--sh)}
 .box{width:100%;max-width:480px;margin:auto;background:var(--paper);border-radius:6px;padding:16px;max-height:90vh;overflow:auto;animation:rise .3s both}
@@ -212,8 +223,9 @@ details .in{padding:0 0 18px;animation:rise .4s both}
 summary small.mc{font:500 11px var(--mono);letter-spacing:.08em;color:var(--mute);margin-left:auto;margin-right:12px}
 summary span{flex:none}
 .xrow{display:flex;align-items:center;gap:6px}.xrow .chk{flex:1}
-.inp{flex:1;min-width:0;padding:11px 12px;background:#fbf6e8;border:1px solid #1c273344;border-radius:999px;font:400 15px var(--body);color:var(--ink);outline:none}
-.inp:focus{border-color:var(--dende)}
+.inp{flex:1;min-width:0;padding:8px 14px;background:#fffaf0;border:0;border-bottom:1.5px solid #1c273366;border-radius:2px 2px 0 0;font:400 25px/1 var(--pen);color:var(--ink);outline:none}
+.inp:focus{border-bottom-color:var(--dende);background:#fff}
+.inp::placeholder{color:#1c273366}
 .hero .ph.m img{aspect-ratio:3/2}.hero .ph.s img{aspect-ratio:1/1}
 .leaflet-container{font-family:var(--body);background:#e9dfc8}
 #map{height:60vh;min-height:380px;box-shadow:var(--sh);border-radius:2px;z-index:1}
@@ -250,14 +262,16 @@ summary span{flex:none}
 
 <div class="ov" id="capov"><div class="sheet">
 <div class="row" style="justify-content:space-between;flex-wrap:nowrap"><div><div class="cap">Registro solto</div><h2>O que apareceu?</h2></div><button class="btn" data-act="closecap">fechar</button></div>
-<div class="chips" id="capchips" style="margin-top:10px"></div>
-<textarea id="captext" placeholder="Escreva sem organizar: uma rua, uma frase, um cheiro, uma dúvida…"></textarea>
-<div style="margin-top:10px"><select id="capday"></select></div>
+<div class="lbl" style="margin-top:14px">Tipo</div>
+<div class="chips" id="capchips" style="margin-top:2px;margin-bottom:4px"></div>
+<div class="npad" style="margin-top:12px"><textarea id="captext" placeholder="uma rua, uma frase, um cheiro, uma dúvida…" rows="4"></textarea></div>
+<div class="lbl">Qual dia?</div>
+<div class="days" id="capdays"></div><input type="hidden" id="capday" value="-1">
 <div class="prev" id="capprev"><img id="capimg" alt=""><button class="btn" data-act="rmphoto" style="position:absolute;right:8px;top:8px;background:var(--paper);padding:5px 10px">remover</button></div>
 <div class="row" style="margin-top:14px;justify-content:space-between">
 <label class="btn" style="margin:0">+ foto<input type="file" accept="image/*" id="capfile" hidden></label>
 <button class="btn red" data-act="savecap">colar no caderno</button></div>
-<div class="credit" style="margin-top:12px">Salvo só neste navegador · use “Copiar tudo” no Caderno</div>
+
 </div></div>
 
 <div class="ov" id="boxov" style="align-items:center;padding:12px"><div class="box" id="box"></div></div>
@@ -548,8 +562,9 @@ let cap={cat:'Observei',photo:null};
 function curDay(){const m=location.hash.match(/^#dia-(\d)$/);if(m)return +m[1]-1;const t=todayIdx();return t>=0&&t<=7?t:-1}
 function openCap(o={}){cap={cat:o.cat||'Observei',photo:null};
  $('#capchips').innerHTML=CATS.map(([n,c])=>`<button class="chip${n===cap.cat?' on':''}" style="--c:${c}" data-act="capcat" data-c="${n}">${n}</button>`).join('');
- $('#capday').innerHTML=`<option value="-1">Sem dia específico</option>`+DAYS.map((d,i)=>`<option value="${i}">Dia ${i+1} · ${d.d} ${d.dt} · ${esc(d.t)}</option>`).join('');
- $('#capday').value=String(o.day!=null?o.day:curDay());$('#captext').value=o.pre||'';$('#capprev').style.display='none';$('#capfile').value='';
+ const dv=o.day!=null?o.day:curDay();$('#capday').value=String(dv);
+ $('#capdays').innerHTML=`<button class="dpill${dv<0?' on':''}" data-act="capday" data-d="-1">Sem dia<small>solto</small></button>`+DAYS.map((d,i)=>`<button class="dpill${dv===i?' on':''}${LIGHT.includes(i)?' lt':''}" style="--c:${DC[i]}" data-act="capday" data-d="${i}">Dia ${i+1}<small>${d.d} ${d.dt}</small></button>`).join('');
+ setTimeout(()=>{const on=$('#capdays .on');if(on&&on.scrollIntoView)on.parentNode.scrollLeft=Math.max(0,on.offsetLeft-60)},80);$('#captext').value=o.pre||'';$('#capprev').style.display='none';$('#capfile').value='';
  $('#capov').classList.add('show');setTimeout(()=>{const t=$('#captext');t.focus();t.setSelectionRange(t.value.length,t.value.length)},60)}
 const closeCap=()=>$('#capov').classList.remove('show');
 async function addPhoto(file){try{return await shrink(file)}catch(e){toast('Não consegui abrir essa foto');return null}}
@@ -565,6 +580,7 @@ document.addEventListener('click',async ev=>{const el=ev.target.closest('[data-a
  if(a==='praia'){sortearPraia();return}
  if(a==='cap')openCap({cat:el.dataset.cat,day:el.dataset.day!=null?+el.dataset.day:undefined,pre:el.dataset.pre});
  else if(a==='closecap')closeCap();
+ else if(a==='capday'){$('#capday').value=el.dataset.d;document.querySelectorAll('#capdays .dpill').forEach(b=>b.classList.toggle('on',b===el))}
  else if(a==='capcat'){cap.cat=el.dataset.c;document.querySelectorAll('#capchips .chip').forEach(b=>b.classList.toggle('on',b===el))}
  else if(a==='savecap')saveCap();
  else if(a==='rmphoto'){cap.photo=null;$('#capprev').style.display='none';$('#capfile').value=''}
