@@ -440,7 +440,7 @@ ${last?`<div class="cap" style="margin:4px 0 10px;color:var(--ink)">Últimas pá
 function vRoteiro(){const ti=todayIdx();
  const rows=DAYS.map((d,i)=>`<a class="dayrow${ti===i?' now':''}" style="--c:${DC[i]}" href="#dia-${i+1}"><div class="dayno">${String(i+1).padStart(2,'0')}</div><div><strong>${esc(d.t)}</strong><small>${d.d} · ${d.dt}</small></div><span class="go">›</span></a>`).join('');
  return `<header class="top"><span>O roteiro</span><span>8 dias · 7 noites</span></header>
-<section class="page grid"><span class="washi"></span><div class="cap">Caminhos previstos · não obrigatórios</div><h2 style="font:600 46px/.95 var(--disp);letter-spacing:-.045em;margin:8px 0 4px">Oito fitas,<br><span style="font-style:italic;font-weight:400;color:var(--dende)">oito dias.</span></h2><div style="margin-top:14px">${rows}</div></section>
+<section class="page grid"><span class="washi"></span><h2 style="font:600 46px/.95 var(--disp);letter-spacing:-.045em;margin:8px 0 4px">Oito fitas,<br><span style="font-style:italic;font-weight:400;color:var(--dende)">oito dias.</span></h2><div style="margin-top:14px">${rows}</div></section>
 <section class="scrap"><span class="washi r"></span><div class="cap" style="color:#1f7f94">Janelas de praia</div><h2 style="font-size:28px;margin:4px 0 8px">Três chances</h2><table class="tbl"><tr><td>Ter 01/12</td><td>Barra / Porto da Barra</td></tr><tr><td>Qui 03/12</td><td>Praia escolhida pela previsão</td></tr><tr><td>Sáb 05/12</td><td>Rio Vermelho, se o mar deixar</td></tr></table></section>`}
 
 function vDia(n){const i=n-1,d=DAYS[i];if(!d)return vRoteiro();const c=DC[i];const ti=todayIdx();
