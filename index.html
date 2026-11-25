@@ -310,7 +310,7 @@ const ROTA_BF='https://www.google.com/maps/dir/?api=1&origin=Igreja+do+Bonfim+Sa
 const REG_PAD=['O que chamou minha atenção hoje?','Quem usa este espaço, e como?','O que eu quero voltar para ver?'];
 const DAYS=[
 {d:'DOM',dt:'29/11',t:'Chegada & Campo Grande',tema:'Chegada, orientação, ambientação e observação sem pressa.',ritmo:'Leve. Não programar atrações distantes.',
- prog:['13h40 — chegada prevista a Salvador','Uber até o Hotel da Bahia by Wish','Check-in, descanso e organização','Passeio leve por Campo Grande, Av. Sete de Setembro e Largo Dois de Julho, se houver disposição','Jantar perto do hotel, fácil de voltar'],
+ prog:['13h40 — chegada prevista a Salvador','Uber até o Hotel da Bahia by Wish','Check-in, descanso e organização','Passeio leve por Campo Grande, Av. Sete de Setembro e Largo Dois de Julho, se houver disposição','Jantar no hotel na primeira noite'],
  intro:'Não começar a viagem com uma lista de atrações. Observar a cidade no primeiro contato: relevo, clima, ruas, circulação, arquitetura, comércio, sons — e as diferenças em relação ao imaginário prévio.',
  olhar:[],reg:['O que eu imaginava de Salvador antes de chegar?','O que já me surpreendeu?','Como é a paisagem urbana ao redor do hotel?','O que quero investigar nos próximos dias?'],
  lug:[['Aeroporto de Salvador (SSA)','Aeroporto Salvador SSA'],['Hotel da Bahia by Wish','Hotel da Bahia by Wish Avenida Sete de Setembro 1537 Salvador'],['Campo Grande','Campo Grande Salvador'],['Largo Dois de Julho','Largo Dois de Julho Salvador']]},
@@ -466,11 +466,41 @@ const PRAIAS=[
 let praiaI=-1,praiaT=null;
 const praiaCard=i=>{const b=PRAIAS[i];return `<div class="pr-name">${esc(b[0])}</div><div class="cap" style="margin:2px 0 8px;color:#1f7f94">${esc(b[1])} · ${esc(b[3])}</div><div style="font:italic 400 17px/1.35 var(--disp)">${esc(b[2])}</div><div class="row" style="margin-top:12px"><a class="btn" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Praia '+b[0].replace(/^Praia (do |da )?/,'')+' Salvador Bahia')}" target="_blank" rel="noopener">Ver no Maps ↗</a></div>`};
 function sortearPraia(){const out=document.getElementById('praiaOut');if(!out)return;const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;let n=rm?0:9,i=praiaI;clearInterval(praiaT);const fin=()=>{let k;do{k=Math.floor(Math.random()*PRAIAS.length)}while(k===praiaI&&PRAIAS.length>1);praiaI=k;out.innerHTML=praiaCard(k);out.classList.remove('spin')};if(!n){fin();return}out.classList.add('spin');praiaT=setInterval(()=>{i=(i+1+Math.floor(Math.random()*3))%PRAIAS.length;out.innerHTML=`<div class="pr-name">${esc(PRAIAS[i][0])}</div>`;if(--n<=0){clearInterval(praiaT);fin()}},90)}
+const COMER=[
+['Quintal','Campo Grande · a pé do hotel','Bar e restaurante na própria Avenida Sete, bem perto do hotel. Em matéria de 2025 abria de terça a sexta, à noite.',1,'Quintal Avenida Sete de Setembro 1370 Campo Grande Salvador'],
+['Restaurante do Armazém 44','Campo Grande · a pé do hotel','Fica na Ladeira da Fonte, 44. Em matéria de 2025 abria de quarta a sábado à noite e aos domingos até as 21h, o que ajuda na primeira noite.',1,'Armazém 44 Ladeira da Fonte 44 Campo Grande Salvador'],
+['Chez Bernard','Dois de Julho · curta distância','Casa pequena na Rua Gamboa de Cima, conhecida pelas éclairs de sobremesa.',1,'Chez Bernard Rua Gamboa de Cima 11 Dois de Julho Salvador'],
+['Largo Dois de Julho','Dois de Julho · curta distância','Bairro boêmio, com vários bares e restaurantes em volta do largo. Bom para olhar e escolher na hora.',1,'Largo Dois de Julho Salvador'],
+['Pelourinho e Carmo','Centro Histórico · Uber','Concentra boas opções de restaurante. Vale combinar com o dia do guia e jantar por ali mesmo.',0,'restaurantes Pelourinho Salvador'],
+['Bistrô 9','Santo Antônio Além do Carmo · Uber','Bar e bistrô no bairro, que fica perto do fim do percurso do guia.',0,'Bistrô 9 Santo Antônio Além do Carmo Salvador'],
+['Pereira','Orla do Porto da Barra · Uber','Frutos do mar com vista para o mar, muito procurado no pôr do sol. Fica na Avenida Sete, 3959.',0,'Pereira Restaurante Avenida Sete de Setembro 3959 Barra Salvador'],
+['Bahia Marina','Comércio · Uber','Conjunto de restaurantes à beira-mar, na Cidade Baixa, bom para fim de tarde depois do dia no Mercado Modelo e no Lacerda.',0,'Bahia Marina Salvador restaurantes'],
+['Acarajé da Dinha','Largo de Santana, Rio Vermelho · Uber','Um dos acarajés mais famosos da cidade. A praça é cercada de bares e as mesas lotam, então chegue cedo.',0,'Acarajé da Dinha Largo de Santana Rio Vermelho Salvador'],
+['Acarajé da Cira','Largo da Mariquita, Rio Vermelho · Uber','Outra baiana tradicional do bairro, com bares e feira de artesanato por perto.',0,'Acarajé da Cira Largo da Mariquita Rio Vermelho Salvador'],
+['Casa de Tereza','Rio Vermelho · Uber','Cozinha baiana de mesa, com a moqueca como destaque.',0,'Casa de Tereza Rio Vermelho Salvador'],
+['Mercado do Rio Vermelho','Rio Vermelho · Uber','Mercado com comida popular e preço mais em conta. O antigo Mercado do Peixe é indicado para fim de noite.',0,'Mercado do Rio Vermelho Salvador']
+];
+const NOITE=[
+['Jantar no hotel, como combinado.','Se sobrar energia, uma volta curta e a pé pelo Largo Dois de Julho. Domingo à noite muita coisa fecha cedo, então confirme o horário antes.',['Largo Dois de Julho','Restaurante do Armazém 44']],
+['Jantar no Centro Histórico ou de volta perto do hotel.','Depois da caminhada com o guia, o mais prático é ficar por ali. Confirme se o lugar abre às segundas.',['Pelourinho e Carmo','Bistrô 9','Quintal']],
+['Pôr do sol e jantar na orla da Barra.','Depois da praia, é só ficar por ali: frutos do mar com vista para o mar.',['Pereira']],
+['Fim de tarde à beira-mar na Cidade Baixa, ou jantar perto do hotel.','O Bahia Marina fica no Comércio, na região do Mercado Modelo e do Elevador Lacerda.',['Bahia Marina','Quintal','Chez Bernard']],
+['Almoço simples na praia e noite leve.','Dia de descanso: jantar perto do hotel, sem ir longe.',['Quintal','Largo Dois de Julho']],
+['Acarajé, abará e caruru durante a festa, e noite no Pelourinho ou perto do hotel.','Coma onde a festa estiver. Leve dinheiro trocado e curiosidade.',['Pelourinho e Carmo','Quintal']],
+['Noite no Rio Vermelho.','É o bairro mais gastronômico da cidade. Comece no Largo de Santana com um acarajé e escolha um bar ou restaurante.',['Acarajé da Dinha','Casa de Tereza','Mercado do Rio Vermelho']],
+['Almoço leve antes de ir ao aeroporto.','Voo por volta das 16h40, então termine o almoço sem pressa e deixe margem para o Uber.',[]]
+];
+const comerQ=n=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n)}`;
+const comerByName=n=>COMER.find(x=>x[0]===n);
+let comerI=-1,comerT=null,comerF='';
+const comerCard=i=>{const b=COMER[i];return `<div class="pr-name">${esc(b[0])}</div><div class="cap" style="margin:2px 0 8px;color:#c8322b">${esc(b[1])}</div><div style="font:italic 400 17px/1.35 var(--disp)">${esc(b[2])}</div><div class="row" style="margin-top:12px"><a class="btn" href="${comerQ(b[4])}" target="_blank" rel="noopener">Ver no Maps ↗</a></div>`};
+function sortearComer(){const out=document.getElementById('comerOut');if(!out)return;const pool=COMER.map((b,i)=>i).filter(i=>comerF===''||(comerF==='1')===!!COMER[i][3]);if(!pool.length)return;const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;let n=rm?0:9;clearInterval(comerT);const fin=()=>{let k;do{k=pool[Math.floor(Math.random()*pool.length)]}while(k===comerI&&pool.length>1);comerI=k;out.innerHTML=comerCard(k);out.classList.remove('spin')};if(!n){fin();return}out.classList.add('spin');comerT=setInterval(()=>{out.innerHTML=`<div class="pr-name">${esc(COMER[pool[Math.floor(Math.random()*pool.length)]][0])}</div>`;if(--n<=0){clearInterval(comerT);fin()}},90)}
 function vRoteiro(){const ti=todayIdx();
  const rows=DAYS.map((d,i)=>`<a class="dayrow${ti===i?' now':''}" style="--c:${DC[i]}" href="#dia-${i+1}"><div class="dayno">${String(i+1).padStart(2,'0')}</div><div><strong>${esc(d.t)}</strong><small>${d.d} · ${d.dt}</small></div><span class="go">›</span></a>`).join('');
  return `<header class="top"><span>O roteiro</span><span>8 dias · 7 noites</span></header>
 <section class="page grid"><span class="washi"></span><h2 style="font:600 46px/.95 var(--disp);letter-spacing:-.045em;margin:8px 0 4px">Oito fitas,<br><span style="font-style:italic;font-weight:400;color:var(--dende)">oito dias.</span></h2><div style="margin-top:14px">${rows}</div></section>
 <section class="scrap"><span class="washi r"></span><div class="cap" style="color:#1f7f94">Praias de Salvador</div><h2 style="font-size:28px;margin:4px 0 6px">Sem decidir? Sorteie.</h2><div style="font-size:13px;margin-bottom:12px">Opções para os dias de praia (ter, qui, sáb) e para qualquer dia indeciso. Confira a previsão e as condições do mar antes de ir.</div><div id="praiaOut" class="praiaout"><div style="font:italic 400 17px/1.35 var(--disp);opacity:.65">Toque no botão para sortear uma praia.</div></div><div class="row" style="margin-top:12px"><button class="btn red" data-act="praia">🎲 Sortear praia</button></div><details style="margin-top:14px"><summary class="cap" style="cursor:pointer">Ver todas as opções</summary><table class="tbl" style="margin-top:8px">${PRAIAS.map(b=>`<tr><td>${esc(b[0])}</td><td>${esc(b[1])}. ${esc(b[2])}</td></tr>`).join('')}</table></details></section>
+<section class="scrap"><span class="washi l"></span><div class="cap" style="color:#c8322b">Onde comer</div><h2 style="font-size:28px;margin:4px 0 6px">Sem ideia do que jantar?</h2><div style="font-size:13px;margin-bottom:10px">Sorteie um lugar, com ou sem Uber. Quase tudo longe do hotel pede Uber. Confira o horário antes de ir.</div><div class="chips" id="comerchips" style="margin-bottom:8px"><button class="chip on" data-act="comerf" data-f="">Todos</button><button class="chip" data-act="comerf" data-f="1">Perto do hotel</button><button class="chip" data-act="comerf" data-f="0">De Uber</button></div><div id="comerOut" class="praiaout"><div style="font:italic 400 17px/1.35 var(--disp);opacity:.65">Toque no botão para sortear um lugar.</div></div><div class="row" style="margin-top:12px"><button class="btn red" data-act="comer">🍽️ Sortear lugar</button></div><details style="margin-top:14px"><summary class="cap" style="cursor:pointer">Ver todos os lugares</summary><table class="tbl" style="margin-top:8px">${COMER.map(b=>`<tr><td>${esc(b[0])}</td><td>${esc(b[1])}. ${esc(b[2])}</td></tr>`).join('')}</table></details></section>
 `}
 
 function vDia(n){const i=n-1,d=DAYS[i];if(!d)return vRoteiro();const c=DC[i];const ti=todayIdx();
@@ -490,6 +520,7 @@ function vDia(n){const i=n-1,d=DAYS[i];if(!d)return vRoteiro();const c=DC[i];con
 <div class="cap" style="padding-top:22px">${d.d} · ${d.dt}</div><h1>${esc(d.t)}</h1><div class="tema">${esc(d.tema)}</div>${d.ritmo?`<div class="pen" style="margin-top:14px;color:var(--ink);font-size:27px">${esc(d.ritmo)}</div>`:''}
 ${pic}
 <div class="sec"><h3><em>Programação-base</em>O dia, em linhas</h3>${pr}${rota}</div>
+${(()=>{const nt=NOITE[i];if(!nt)return '';return `<div class="sec"><h3><em>Comer</em>Noite e jantar</h3><div class="note pl"><b style="font:600 17px var(--disp)">${esc(nt[0])}</b> ${esc(nt[1])}</div>${nt[2].map(n=>{const b=comerByName(n);return b?`<div class="place"><span>${esc(b[0])}<small style="display:block;font:400 10px var(--mono);color:var(--mute);margin-top:2px">${esc(b[1])}</small></span><a class="m" href="${comerQ(b[4])}" target="_blank" rel="noopener">mapa ↗</a></div>`:''}).join('')}</div>`})()}
 ${d.intro?`<div class="note">${esc(d.intro)}</div>`:''}${d.aviso?`<div class="note">${esc(d.aviso)}</div>`:''}
 ${seq}${ops}${olh}${d.alt?`<div class="note">${esc(d.alt)}</div>`:''}
 <div class="sec"><h3><em>Registro · toque para responder</em>Perguntas</h3>${d.reg.map(q=>`<button class="ask" data-act="cap" data-day="${i}" data-cat="Me pergunto" data-pre="${esc(q)}&#10;">${esc(q)}</button>`).join('')}</div>
@@ -578,6 +609,8 @@ async function saveCap(){const text=$('#captext').value.trim();if(!text&&!cap.ph
 let delT={};
 document.addEventListener('click',async ev=>{const el=ev.target.closest('[data-act]');if(!el)return;const a=el.dataset.act;
  if(a==='praia'){sortearPraia();return}
+ if(a==='comer'){sortearComer();return}
+ if(a==='comerf'){comerF=el.dataset.f;document.querySelectorAll('#comerchips .chip').forEach(b=>b.classList.toggle('on',b===el));sortearComer();return}
  if(a==='cap')openCap({cat:el.dataset.cat,day:el.dataset.day!=null?+el.dataset.day:undefined,pre:el.dataset.pre});
  else if(a==='closecap')closeCap();
  else if(a==='capday'){$('#capday').value=el.dataset.d;document.querySelectorAll('#capdays .dpill').forEach(b=>b.classList.toggle('on',b===el))}
