@@ -173,7 +173,7 @@ h1,h2,h3{font-family:var(--disp);font-weight:500;margin:0;letter-spacing:-.02em}
 .entry .meta{font:500 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);display:flex;justify-content:space-between;gap:8px;align-items:center}
 .entry img{width:100%;max-height:280px;object-fit:cover;display:block;margin:4px 0 8px;filter:saturate(.92)}
 .del{background:none;border:0;font:500 9px var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;color:var(--mute);padding:6px 0 6px 8px}
-.empty-msg{text-align:center;color:var(--mute);padding:38px 18px;font:italic 400 20px/1.25 var(--disp);border:1.5px dashed #1c273355;margin:6px 0 18px}
+.empty-msg{box-sizing:border-box;width:calc(100% - 4px);max-width:100%;text-align:center;color:var(--mute);padding:30px 14px;font:italic 400 18px/1.25 var(--disp);border:1.5px dashed #1c273355;margin:6px 2px 18px;overflow-wrap:anywhere}
 details{border-bottom:1px solid #1c273330}
 summary{list-style:none;cursor:pointer;padding:16px 0;font:500 24px var(--disp);letter-spacing:-.02em;display:flex;justify-content:space-between;align-items:center}
 summary::-webkit-details-marker{display:none}
