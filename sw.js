@@ -1,4 +1,4 @@
-const V='salvador-v4';
+const V='salvador-v5';
 const CORE=['./','./index.html','./manifest.webmanifest','./icons/icon-180.png','./icons/icon-192.png','./icons/icon-512.png','./vendor/leaflet.js','./vendor/leaflet.css','./img/pelourinho.jpg','./img/fitas.jpg','./img/laranjeiras.jpg','./img/farol.jpg','./img/lacerda.jpg','./img/barra.jpg','./img/mercado.jpg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});

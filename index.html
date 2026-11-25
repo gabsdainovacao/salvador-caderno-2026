@@ -400,7 +400,8 @@ function locate(){if(!navigator.geolocation){toast('Localização indisponível 
 /* fotos da capa: sorteia a cada abertura */
 const POOL=[['pelourinho','Pelourinho, Salvador'],['fitas','Fitas do Senhor do Bonfim'],['laranjeiras','Rua das Laranjeiras, Pelourinho'],['farol','Mar no Farol da Barra, vista aérea'],['lacerda','Elevador Lacerda'],['barra','Balaustrada do Porto da Barra'],['mercado','Mercado Modelo, inscrição da antiga alfândega']];
 let cp=null;
-function pickCover(){const last=store.get('sv_cover',{});const rnd=ex=>{let i;do{i=Math.floor(Math.random()*POOL.length)}while(ex.includes(i));return i};const m=rnd([last.m]),s=rnd([m,last.s]);cp={m,s};store.set('sv_cover',cp);PH.cover=['img/'+POOL[m][0]+'.jpg',POOL[m][1]];PH.fitas=['img/'+POOL[s][0]+'.jpg',POOL[s][1]]}
+function coverPool(){const u=entries.filter(e=>e.photo&&mem[e.photo]).map(e=>({k:'u'+e.photo,src:mem[e.photo],cap:'Do caderno · '+dayLabel(e.day),u:1}));const b=POOL.map(x=>({k:x[0],src:'img/'+x[0]+'.jpg',cap:x[1]}));return {u,b}}
+function pickCover(){const last=store.get('sv_cover',{});const {u,b}=coverPool();const all=u.concat(b);const pick=ex=>{let c=u.length&&Math.random()<.65?u:all;let l=c.filter(x=>!ex.includes(x.k));if(!l.length)l=all.filter(x=>!ex.includes(x.k));if(!l.length)l=all;return l[Math.floor(Math.random()*l.length)]};const m=pick([last.m]),s=pick([m.k,last.s]);cp={m:m.k,s:s.k};store.set('sv_cover',cp);PH.cover=[m.src,m.cap];PH.fitas=[s.src,s.cap]}
 
 const ph=(k,cls,r,d,extra='')=>`<figure class="ph drop ${cls}" style="--r:${r}deg;--d:${d}s;margin:0;${extra}"><img src="${PH[k][0]}" alt="${esc(PH[k][1])}" loading="eager"><small>${esc(PH[k][1])}</small></figure>`;
 const fitaHTML=(i,h,sd)=>`<a class="fita" href="#dia-${i+1}" style="--c:${DC[i]};--t:${LIGHT.includes(i)?'#1c2733':'#f8e7ae'};height:${h}px;--sd:${sd}s" aria-label="Dia ${i+1}">${String(i+1).padStart(2,'0')} <b>·</b> ${DAYS[i].d} ${DAYS[i].dt}</a>`;
@@ -576,7 +577,7 @@ async function doExport(){const t=exportText();try{await navigator.clipboard.wri
 
 /* ---------- início ---------- */
 route();
-idbOpen().then(loadPhotos).then(()=>{if(Object.keys(mem).length)route(true)});
+idbOpen().then(loadPhotos).then(()=>{if(Object.keys(mem).length){if((location.hash.slice(1)||'capa')==='capa'&&entries.some(e=>e.photo&&mem[e.photo]))pickCover();route(true)}});
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
